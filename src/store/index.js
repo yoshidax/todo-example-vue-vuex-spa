@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { header } from './header'
-import { todos } from './todos'
-import { todoEdit } from './todoEdit'
+import { header } from '@/store/header'
+import { todos } from '@/store/todos'
+import { todoEdit } from '@/store/todoEdit'
 
 Vue.use(Vuex)
 

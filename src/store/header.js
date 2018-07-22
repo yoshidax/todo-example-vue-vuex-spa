@@ -1,4 +1,4 @@
-import { button } from './button'
+import { button } from '@/store/button'
 
 const state = {
   title: ''
