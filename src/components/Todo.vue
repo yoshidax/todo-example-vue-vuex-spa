@@ -20,7 +20,7 @@
             name="description"
             :value="description"
             @change="onChangeDescription($event.currentTarget.value)"
-          />
+          ></textarea>
         </label>
       </div>
       <button type="submit">update</button>

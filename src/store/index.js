@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import { header } from './header'
-import { footer } from './footer'
 import { todos } from './todos'
 import { todoEdit } from './todoEdit'
 
@@ -25,7 +24,6 @@ export const store = new Vuex.Store({
   mutations,
   modules: {
     header,
-    footer,
     todos,
     todoEdit
   }

@@ -1,21 +1,28 @@
 <template>
   <div id="app">
-    <div class="header">
+    <section class="header">
       <AppHeader
         :title="headerTitle"
         :showCreateTodoButton="showTodosControl"
         @clickButtonCreateTodo="clickButtonCreateTodo"
       />
-    </div>
+    </section>
     <main>
       <router-view />
     </main>
-    <AppFooter />
+    <section class="footer">
+      <AppFooter
+        :todosCount="todosCount"
+        :doneTodosCount="doneTodosCount"
+      />
+    </section>
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+
+import { ActionTypes, GetterTypes } from '@/store/todos'
 
 import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter'
@@ -28,6 +35,7 @@ const mapStateHeader = mapHeader.mapState
 const mapActionsHeader = mapHeader.mapActions
 
 const mapTodos = createNamespacedHelpers('todos')
+const mapGettersTodos = mapTodos.mapGetters
 const mapActionsTodos = mapTodos.mapActions
 
 export default {
@@ -37,6 +45,10 @@ export default {
     AppFooter
   },
   computed: {
+    ...mapGettersTodos({
+      todosCount: GetterTypes.TODOS_COUNT,
+      doneTodosCount: GetterTypes.DONE_TODOS_COUNT
+    }),
     ...mapStateHeader({
       headerTitle: 'title'
     }),
@@ -52,10 +64,10 @@ export default {
       'setTitle'
     ]),
     ...mapActionsTodos({
-      createTodo: 'create',
-      setTodoTitle: 'setTitle',
-      setTodoDescription: 'setDescription',
-      removeTodo: 'remove'
+      createTodo: ActionTypes.CREATE,
+      setTodoTitle: ActionTypes.SET_TITLE,
+      setTodoDescription: ActionTypes.SET_DESCRIPTION,
+      removeTodo: ActionTypes.REMOVE
     }),
     clickButtonCreateTodo () {
       this.createTodo()

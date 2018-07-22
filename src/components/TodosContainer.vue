@@ -10,11 +10,13 @@
 </template>
 
 <script>
-import Todos from '@/components/Todos'
 import { createNamespacedHelpers } from 'vuex'
 
+import Todos from '@/components/Todos'
+import { GetterTypes } from '@/store/todos'
+
 const mapTodos = createNamespacedHelpers('todos')
-const mapStateTodos = mapTodos.mapState
+const mapGettersTodos = mapTodos.mapGetters
 const mapActionsTodos = mapTodos.mapActions
 
 export default {
@@ -23,7 +25,9 @@ export default {
     Todos
   },
   computed: {
-    ...mapStateTodos(['todos'])
+    ...mapGettersTodos({
+      todos: GetterTypes.TODOS
+    })
   },
   methods: {
     ...mapActionsTodos(['toggleDone']),
