@@ -1,10 +1,11 @@
 <template>
   <div>
-    <Todos
+    <TodoList
       :todos="todos"
-      @clickButtonRemove="onClickButtonRemove"
-      @toggleButtonDone="onToggleButtonDone"
-      @clickButtonEdit="onClickButtonEdit"
+      @delete:todo="onDeleteTodo"
+      @toggle:todo="onToggleTodo"
+      @edit:todo="onEditTodo"
+      @create:todo="onCreateTodo"
     />
   </div>
 </template>
@@ -12,17 +13,17 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 
-import Todos from '@/components/Todos'
-import { GetterTypes } from '@/store/todos'
+import TodoList from '@/components/TodoList'
+import { GetterTypes, ActionTypes } from '@/store/todos'
 
 const mapTodos = createNamespacedHelpers('todos')
 const mapGettersTodos = mapTodos.mapGetters
 const mapActionsTodos = mapTodos.mapActions
 
 export default {
-  name: 'TodosContainer',
+  name: 'TodoListContainer',
   components: {
-    Todos
+    TodoList
   },
   computed: {
     ...mapGettersTodos({
@@ -30,22 +31,28 @@ export default {
     })
   },
   methods: {
-    ...mapActionsTodos(['toggleDone']),
+    ...mapActionsTodos([
+      'toggleDone'
+    ]),
     ...mapActionsTodos({
-      removeTodo: 'remove'
+      removeTodo: ActionTypes.REMOVE,
+      createTodo: ActionTypes.CREATE
     }),
-    onClickButtonRemove (todoId) {
+    onDeleteTodo (todoId) {
       this.removeTodo(todoId)
     },
-    onToggleButtonDone (todoId) {
+    onToggleTodo (todoId) {
       this.toggleDone(todoId)
     },
-    onClickButtonEdit (todoId) {
+    onEditTodo (todoId) {
       this.$router.push({ name: 'todoEdit', params: { id: todoId } })
+    },
+    onCreateTodo () {
+      this.createTodo()
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 </style>

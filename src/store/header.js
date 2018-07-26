@@ -1,5 +1,3 @@
-import { button } from '@/store/button'
-
 const state = {
   title: ''
 }
@@ -25,9 +23,5 @@ export const header = {
   },
   actions,
   getters,
-  mutations,
-  modules: {
-    buttonLeft: button,
-    buttonRight: button
-  }
+  mutations
 }

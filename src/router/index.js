@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import TodosContainer from '@/components/TodosContainer'
+import TodoListContainer from '@/components/TodoListContainer'
 import EditableTodoContainer from '@/components/EditableTodoContainer'
 
 Vue.use(Router)
@@ -16,8 +16,8 @@ export default new Router({
     },
     {
       path: '/todos',
-      name: 'todos',
-      component: TodosContainer
+      name: 'todoList',
+      component: TodoListContainer
     },
     {
       path: '/todos/:id/edit',

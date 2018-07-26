@@ -3,29 +3,26 @@
     @click.prevent="onClickButton"
     :disabled="disabled"
     class="buttton"
-  >{{ label }}</button>
+  >
+    <slot>button</slot>
+  </button>
 </template>
 
 <script>
 export default {
   name: 'ButtonBasic',
   props: {
-    label: {
-      type: String,
-      default: 'button'
-    },
     disabled: {
       type: Boolean,
       default: false
     },
-    eventSuffix: {
+    eventName: {
       type: String
     }
   },
   methods: {
     onClickButton () {
-      const suffix = this.eventSuffix ? `:${this.eventSuffix}` : ''
-      this.$emit(`clickButton${suffix}`)
+      this.$emit(this.eventName ? this.eventName : 'click')
     }
   }
 }

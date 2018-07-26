@@ -2,7 +2,7 @@
  <div class="home">
    <h1>Welcome to Todo App!!</h1>
    <div class="home-start">
-     <router-link :to="{ name: 'todos' }">start!!</router-link>
+     <router-link :to="{ name: 'todoList' }">start!!</router-link>
    </div>
  </div>
 </template>

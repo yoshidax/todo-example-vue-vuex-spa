@@ -1,22 +1,39 @@
 <template>
   <div class="todos">
+    <ButtonBasic
+      eventName="create:todo"
+      @create:todo="onCreateTodo"
+    >
+      <span>create todo</span>
+    </ButtonBasic>
     <ul>
       <li v-for="todo in todos" :key="todo.id">
         <div class="todo-content">
-          <span class="todo-title" :class="{ 'isDone': todo.isDone }">{{ todo.title }}</span>
+          <span
+            class="todo-title"
+            :class="{ 'isDone': todo.isDone }"
+          >
+            {{ todo.title }}
+          </span>
           <ButtonBasic
-            label="remove"
-            @clickButton="onClickButtonRemove(todo.id)"
-          />
+            eventName="delete:todo"
+            @delete:todo="onDeleteTodo(todo.id)"
+          >
+            <span>remove</span>
+          </ButtonBasic>
           <ButtonBasic
-            :label="getLabel(todo.isDone)"
-            @clickButton="onToggleButtonDone(todo.id)"
-          />
+            eventName="toggle:todo"
+            @toggle:todo="onToggleTodo(todo.id)"
+          >
+            <span>{{toggleLabel(todo.isDone)}}</span>
+          </ButtonBasic>
           <ButtonBasic
-            label="edit"
+            eventName="edit:todo"
             :disabled="todo.isDone"
-            @clickButton="onClickButtonEdit(todo.id)"
-          />
+            @edit:todo="onEditTodo(todo.id)"
+          >
+            <span>edit</span>
+          </ButtonBasic>
         </div>
       </li>
     </ul>
@@ -38,17 +55,20 @@ export default {
     }
   },
   methods: {
-    onClickButtonRemove (todoId) {
-      this.$emit('clickButtonRemove', todoId)
+    onDeleteTodo (todoId) {
+      this.$emit('delete:todo', todoId)
     },
-    onToggleButtonDone (todoId) {
-      this.$emit('toggleButtonDone', todoId)
+    onToggleTodo (todoId) {
+      this.$emit('toggle:todo', todoId)
     },
-    onClickButtonEdit (todoId) {
-      this.$emit('clickButtonEdit', todoId)
+    onEditTodo (todoId) {
+      this.$emit('edit:todo', todoId)
     },
-    getLabel (isDone) {
+    toggleLabel (isDone) {
       return isDone ? 'incomplete' : 'complete'
+    },
+    onCreateTodo () {
+      this.$emit('create:todo')
     }
   }
 }

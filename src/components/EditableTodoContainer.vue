@@ -73,10 +73,10 @@ export default {
         title: this.title,
         description: this.description
       })
-      this.$router.push({ name: 'todos' })
+      this.$router.push({ name: 'todoList' })
     },
     onClickUpdateCancel () {
-      this.$router.push({ name: 'todos' })
+      this.$router.push({ name: 'todoList' })
     }
   },
   created () {
