@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 import { header } from '@/store/header'
 import { todos } from '@/store/todos'
-import { todoEdit } from '@/store/todoEdit'
+import { todo } from '@/store/todo'
 
 Vue.use(Vuex)
 
@@ -25,6 +25,6 @@ export const store = new Vuex.Store({
   modules: {
     header,
     todos,
-    todoEdit
+    todo
   }
 })

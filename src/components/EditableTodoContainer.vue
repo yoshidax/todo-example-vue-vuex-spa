@@ -1,11 +1,11 @@
 <template>
-  <div class="todo-container">
-    <Todo
+  <div class="editable-todo-container">
+    <EditableTodo
       v-if="beforeEditingTodo"
+      :id="inputId"
+      :isDone="inputIsDone"
       :title.sync="title"
       :description.sync="description"
-      :id="beforeEditingTodo.id"
-      :isDone="beforeEditingTodo.isDone"
       @submitTodo="onSubmitTodo"
       @clickUpdateCancel="onClickUpdateCancel"
     />
@@ -14,21 +14,22 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import Todo from '@/components/Todo'
+import EditableTodo from '@/components/EditableTodo'
 import { toPdeaAccesser } from '@/utils/helper'
+import { ActionTypes } from '@/store/todo'
 
 const mapTodos = createNamespacedHelpers('todos')
 const mapGettersTodos = mapTodos.mapGetters
 const mapActionsTodos = mapTodos.mapActions
 
-const mapTodoEdit = createNamespacedHelpers('todoEdit')
-const mapStateTodoEdit = mapTodoEdit.mapState
-const mapActionsTodoEdit = mapTodoEdit.mapActions
+const mapTodo = createNamespacedHelpers('todo')
+const mapStateTodo = mapTodo.mapState
+const mapActionsTodo = mapTodo.mapActions
 
 export default {
-  name: 'TodoContainer',
+  name: 'EditableTodoContainer',
   components: {
-    Todo
+    EditableTodo
   },
   props: {
     id: {
@@ -38,9 +39,11 @@ export default {
   },
   computed: {
     // map from store
-    ...mapStateTodoEdit({
+    ...mapStateTodo({
+      inputId: 'id',
       inputTitle: 'title',
-      inputDescription: 'description'
+      inputDescription: 'description',
+      inputIsDone: 'isDone'
     }),
     ...mapGettersTodos([
       'todo'
@@ -58,9 +61,10 @@ export default {
     ...mapActionsTodos({
       updateTodo: 'update'
     }),
-    ...mapActionsTodoEdit({
-      setInputTitle: 'setTitle',
-      setInputDescription: 'setDescription'
+    ...mapActionsTodo({
+      initInput: ActionTypes.INIT,
+      setInputTitle: ActionTypes.SET_TITLE,
+      setInputDescription: ActionTypes.SET_DESCRIPTION
     }),
     // event handlers
     onSubmitTodo () {
@@ -77,8 +81,12 @@ export default {
   },
   created () {
     if (!this.beforeEditingTodo) return
-    this.setInputTitle(this.beforeEditingTodo.title)
-    this.setInputDescription(this.beforeEditingTodo.description)
+    this.initInput({
+      id: this.beforeEditingTodo.id,
+      title: this.beforeEditingTodo.title,
+      description: this.beforeEditingTodo.description,
+      isDone: this.beforeEditingTodo.isDone
+    })
   }
 }
 </script>

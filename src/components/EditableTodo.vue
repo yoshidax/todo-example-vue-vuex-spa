@@ -1,5 +1,5 @@
 <template>
-  <div class="todo">
+  <div class="editable-todo">
     <form @submit.prevent="onSubmitTodo">
       <div>id: {{ id }}</div>
       <div>
@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: 'Todo',
+  name: 'EditableTodo',
   props: {
     id: {
       type: Number,
