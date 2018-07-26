@@ -1,13 +1,12 @@
 <template>
-  <div class="todo">
+  <div class="todo-container">
     <Todo
-      :id="todo.id"
-      :title="editedTitle"
-      :description="editedDescription"
-      :isDone="todo.isDone"
+      v-if="beforeEditingTodo"
+      :title.sync="title"
+      :description.sync="description"
+      :id="beforeEditingTodo.id"
+      :isDone="beforeEditingTodo.isDone"
       @submitTodo="onSubmitTodo"
-      @changeTodoTitle="onChangeTodoTitle"
-      @changeTodoDescription="onChangeTodoDescription"
       @clickUpdateCancel="onClickUpdateCancel"
     />
   </div>
@@ -16,6 +15,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import Todo from '@/components/Todo'
+import { toPdeaAccesser } from '@/utils/helper'
 
 const mapTodos = createNamespacedHelpers('todos')
 const mapGettersTodos = mapTodos.mapGetters
@@ -37,46 +37,48 @@ export default {
     }
   },
   computed: {
-    ...mapGettersTodos({
-      getTodo: 'todo'
-    }),
+    // map from store
     ...mapStateTodoEdit({
-      editedTitle: 'title',
-      editedDescription: 'description'
+      inputTitle: 'title',
+      inputDescription: 'description'
     }),
-    todo () {
-      return this.getTodo(this.id)
+    ...mapGettersTodos([
+      'todo'
+    ]),
+    // shorthand for event up and props down
+    title: toPdeaAccesser('inputTitle'),
+    description: toPdeaAccesser('inputDescription'),
+    // etc
+    beforeEditingTodo () {
+      return this.todo(this.id)
     }
   },
   methods: {
+    // map actions
     ...mapActionsTodos({
       updateTodo: 'update'
     }),
     ...mapActionsTodoEdit({
-      setTodoTitle: 'setTitle',
-      setTodoDescription: 'setDescription'
+      setInputTitle: 'setTitle',
+      setInputDescription: 'setDescription'
     }),
+    // event handlers
     onSubmitTodo () {
       this.updateTodo({
-        id: this.todo.id,
-        title: this.editedTitle,
-        description: this.editedDescription
+        id: this.beforeEditingTodo.id,
+        title: this.title,
+        description: this.description
       })
       this.$router.push({ name: 'todos' })
-    },
-    onChangeTodoTitle (title) {
-      this.setTodoTitle(title)
-    },
-    onChangeTodoDescription (description) {
-      this.setTodoDescription(description)
     },
     onClickUpdateCancel () {
       this.$router.push({ name: 'todos' })
     }
   },
   created () {
-    this.setTodoTitle(this.todo.title)
-    this.setTodoDescription(this.todo.description)
+    if (!this.beforeEditingTodo) return
+    this.setInputTitle(this.beforeEditingTodo.title)
+    this.setInputDescription(this.beforeEditingTodo.description)
   }
 }
 </script>

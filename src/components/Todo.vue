@@ -9,7 +9,7 @@
             name="title"
             type="text"
             :value="title"
-            @change="onChangeTitle($event.currentTarget.value)"
+            @input="onChangeTitle($event.currentTarget.value)"
           />
         </label>
       </div>
@@ -19,8 +19,8 @@
           <textarea
             name="description"
             :value="description"
-            @change="onChangeDescription($event.currentTarget.value)"
-          ></textarea>
+            @input="onChangeDescription($event.currentTarget.value)"
+          />
         </label>
       </div>
       <button type="submit">update</button>
@@ -50,10 +50,10 @@ export default {
   },
   methods: {
     onChangeTitle (title) {
-      this.$emit('changeTodoTitle', title)
+      this.$emit('update:title', title)
     },
     onChangeDescription (description) {
-      this.$emit('changeTodoDescription', description)
+      this.$emit('update:description', description)
     },
     onSubmitTodo () {
       this.$emit('submitTodo')
